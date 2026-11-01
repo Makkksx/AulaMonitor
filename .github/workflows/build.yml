@@ -22,18 +22,14 @@ jobs:
       - name: Publish
         run: dotnet publish AulaMonitor/AulaMonitor.csproj -c Release -r win-x64 --self-contained false -o dist
 
-      - name: Package
-        shell: pwsh
-        run: Compress-Archive -Path dist/* -DestinationPath AulaMonitor-win-x64.zip
-
       - uses: actions/upload-artifact@v4
         with:
-          name: AulaMonitor-win-x64
-          path: AulaMonitor-win-x64.zip
+          name: AulaMonitor
+          path: dist/AulaMonitor.exe
 
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: AulaMonitor-win-x64.zip
+          files: dist/AulaMonitor.exe
           generate_release_notes: true
